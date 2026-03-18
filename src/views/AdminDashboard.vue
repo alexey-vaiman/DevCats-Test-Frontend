@@ -29,8 +29,8 @@ const showEditModal = ref(false);
 const showOffersModal = ref(false);
 const showSellerModal = ref(false);
 
-const selectedProduct = ref(null);
-const selectedSeller = ref(null);
+const selectedProduct = ref<any>(null);
+const selectedSeller = ref<any>(null);
 
 const newProduct = ref({
   name: '',

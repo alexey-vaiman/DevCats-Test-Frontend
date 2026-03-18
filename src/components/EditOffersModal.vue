@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue';
-import { X, Plus, Trash2, Save, RotateCcw } from 'lucide-vue-next';
+import { ref, watch } from 'vue';
+import { X, Plus, Trash2, Save } from 'lucide-vue-next';
 import apiClient from '../api';
 
 interface Props {
