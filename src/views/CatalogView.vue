@@ -3,11 +3,11 @@ import { ref, onMounted, onUnmounted, watch } from 'vue';
 import apiClient from '../api';
 import VirtualScroller from '../components/VirtualScroller.vue';
 
-const items = ref([]);
+const items = ref<any[]>([]);
 const loading = ref(false);
 const hasMore = ref(true);
 const nextCursor = ref(null);
-const scrollerRef = ref(null);
+const scrollerRef = ref<any>(null);
 const selectedIdx = ref(0);
 const searchQuery = ref('');
 
@@ -68,10 +68,6 @@ const handleKeydown = (e: KeyboardEvent) => {
     scrollerRef.value?.scrollToIdx(selectedIdx.value);
   }
 };
-
-import { ref, onMounted, onUnmounted, watch } from 'vue';
-
-// ... (logic)
 
 watch(searchQuery, (newVal) => {
   document.title = newVal ? `Search: ${newVal} | Marketplace` : 'Marketplace Catalog';

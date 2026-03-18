@@ -5,7 +5,7 @@ import apiClient from '../api';
 import { Truck, ShieldCheck } from 'lucide-vue-next';
 
 const route = useRoute();
-const product = ref(null);
+const product = ref<any>(null);
 const loading = ref(true);
 const offersSort = ref('price');
 

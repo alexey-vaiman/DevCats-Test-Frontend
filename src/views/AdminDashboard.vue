@@ -17,8 +17,8 @@ const handleShowOffers = (seller: any) => {
 
 const activeTab = ref('products'); // 'products' or 'sellers'
 
-const products = ref([]);
-const sellers = ref([]);
+const products = ref<any[]>([]);
+const sellers = ref<any[]>([]);
 const loading = ref(false);
 const hasMore = ref(true);
 const nextCursor = ref(null);
@@ -197,7 +197,8 @@ onMounted(() => {
             <div class="table-row">
               <div class="col col-name">
                 <div class="product-cell">
-                  <img :src="item.thumbnail_url || 'https://via.placeholder.com/40?text=P'" class="thumb" />
+                  <img v-if="item.thumbnail_url" :src="item.thumbnail_url" class="thumb" />
+                  <ImageIcon v-else class="thumb dark-placeholder" />
                   <span class="truncate">{{ item.name }}</span>
                 </div>
               </div>

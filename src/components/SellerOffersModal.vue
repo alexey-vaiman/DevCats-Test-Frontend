@@ -11,7 +11,7 @@ interface Props {
 const props = defineProps<Props>();
 const emit = defineEmits(['close']);
 
-const offers = ref([]);
+const offers = ref<any[]>([]);
 const loading = ref(false);
 
 const fetchOffers = async () => {
