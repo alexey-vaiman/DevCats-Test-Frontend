@@ -12,7 +12,7 @@ const offersSort = ref('price');
 const fetchProduct = async () => {
   loading.value = true;
   try {
-    const response = await apiClient.get(`/public/products/${route.params.id}`, {
+    const response = await apiClient.get(`public/products/${route.params.id}`, {
       params: { offers_sort: offersSort.value }
     });
     product.value = response.data;

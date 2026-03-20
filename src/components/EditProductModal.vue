@@ -27,7 +27,7 @@ const handleTriggerUpload = () => {
     const formData = new FormData();
     formData.append('file', file);
     try {
-      await apiClient.post(`/admin/products/${props.product.id}/image`, formData, {
+      await apiClient.post(`admin/products/${props.product.id}/image`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       emit('updated');
@@ -59,7 +59,7 @@ const removeAttribute = (index: number) => {
 
 const handleSave = async () => {
   try {
-    await apiClient.put(`/admin/products/${props.product.id}`, editData.value);
+    await apiClient.put(`admin/products/${props.product.id}`, editData.value);
     emit('updated');
     emit('close');
   } catch (err) {

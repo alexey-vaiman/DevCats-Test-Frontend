@@ -23,7 +23,7 @@ const newOffer = ref({
 
 const fetchSellers = async () => {
   try {
-    const response = await apiClient.get('/admin/sellers');
+    const response = await apiClient.get('admin/sellers');
     sellers.value = response.data;
   } catch (err) {
     console.error('Failed to fetch sellers');
@@ -34,7 +34,7 @@ const fetchOffers = async () => {
   if (!props.productId) return;
   loading.value = true;
   try {
-    const response = await apiClient.get(`/admin/products/${props.productId}/offers`);
+    const response = await apiClient.get(`admin/products/${props.productId}/offers`);
     offers.value = response.data;
   } catch (err) {
     console.error('Failed to fetch offers');
@@ -59,7 +59,7 @@ watch(() => props.show, (newVal) => {
 const handleAddOffer = async () => {
   if (!newOffer.value.seller_id) return alert('Select a seller');
   try {
-    await apiClient.post(`/admin/products/${props.productId}/offers`, newOffer.value);
+    await apiClient.post(`admin/products/${props.productId}/offers`, newOffer.value);
     newOffer.value = {
       seller_id: '',
       price: { amount: 0, currency: 'USD' },
@@ -74,7 +74,7 @@ const handleAddOffer = async () => {
 const handleDelete = async (offerId: string) => {
   if (!confirm('Delete this offer?')) return;
   try {
-    await apiClient.delete(`/admin/offers/${offerId}`);
+    await apiClient.delete(`admin/offers/${offerId}`);
     fetchOffers();
   } catch (err) {
     alert('Failed to delete offer');
@@ -84,7 +84,7 @@ const handleDelete = async (offerId: string) => {
 // Simplified: inline update for price only for now to keep UI clean
 const handleUpdatePrice = async (offer: any) => {
   try {
-    await apiClient.put(`/admin/offers/${offer.id}`, {
+    await apiClient.put(`admin/offers/${offer.id}`, {
       seller_id: offer.seller_id,
       price: offer.price,
       delivery_date: offer.delivery_date

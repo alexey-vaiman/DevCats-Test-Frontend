@@ -18,7 +18,7 @@ const fetchOffers = async () => {
   if (!props.seller) return;
   loading.value = true;
   try {
-    const response = await apiClient.get(`/admin/sellers/${props.seller.id}/offers`);
+    const response = await apiClient.get(`admin/sellers/${props.seller.id}/offers`);
     offers.value = response.data;
   } catch (err) {
     console.error('Failed to fetch seller offers');

@@ -44,7 +44,7 @@ const fetchProducts = async (reset = false) => {
   loading.value = true;
   if (reset) { products.value = []; nextCursor.value = null; hasMore.value = true; }
   try {
-    const response = await apiClient.get('/admin/products', {
+    const response = await apiClient.get('admin/products', {
       params: { 
         cursor: nextCursor.value, 
         limit: 50,
@@ -79,7 +79,7 @@ const handleManageOffers = (product: any) => {
 const handleDelete = async (id: string) => {
   if (!confirm('Delete product?')) return;
   try {
-    await apiClient.delete(`/admin/products/${id}`);
+    await apiClient.delete(`admin/products/${id}`);
     fetchProducts(true);
   } catch (err) { alert('Failed'); }
 };
@@ -87,14 +87,14 @@ const handleDelete = async (id: string) => {
 const fetchSellers = async () => {
   loading.value = true;
   try {
-    const response = await apiClient.get('/admin/sellers');
+    const response = await apiClient.get('admin/sellers');
     sellers.value = response.data;
   } catch (err) { console.error(err); } finally { loading.value = false; }
 };
 
 const handleCreateProduct = async () => {
   try {
-    await apiClient.post('/admin/products', newProduct.value);
+    await apiClient.post('admin/products', newProduct.value);
     showCreateModal.value = false;
     newProduct.value = { name: '', price: { amount: 0, currency: 'USD' }, stock: 0, attributes: [] };
     fetchProducts(true);
@@ -114,7 +114,7 @@ const handleCreateSellerTrigger = () => {
 const handleDeleteSeller = async (id: string) => {
   if (!confirm('Delete seller?')) return;
   try {
-    await apiClient.delete(`/admin/sellers/${id}`);
+    await apiClient.delete(`admin/sellers/${id}`);
     fetchSellers();
   } catch (err) { 
     alert('Failed to delete seller. Make sure they have no offers left.');

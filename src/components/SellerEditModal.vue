@@ -32,9 +32,9 @@ watch(() => props.seller, (newVal) => {
 const handleSave = async () => {
   try {
     if (props.seller) {
-      await apiClient.put(`/admin/sellers/${props.seller.id}`, editData.value);
+      await apiClient.put(`admin/sellers/${props.seller.id}`, editData.value);
     } else {
-      await apiClient.post('/admin/sellers', editData.value);
+      await apiClient.post('admin/sellers', editData.value);
     }
     emit('updated');
     emit('close');

@@ -23,7 +23,7 @@ const fetchProducts = async (reset = false) => {
   }
 
   try {
-    const response = await apiClient.get('/public/products', {
+    const response = await apiClient.get('public/products', {
       params: { 
         cursor: nextCursor.value,
         limit: 50,
