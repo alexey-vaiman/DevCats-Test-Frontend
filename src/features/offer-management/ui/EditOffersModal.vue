@@ -11,9 +11,10 @@ interface Props {
 
 const props = defineProps<Props>();
 const emit = defineEmits(['close', 'edit-product']);
+import type { Offer, Seller } from '@/entities/product/model/types';
 
-const offers = ref<any[]>([]);
-const sellers = ref<any[]>([]);
+const offers = ref<Offer[]>([]);
+const sellers = ref<Seller[]>([]);
 const loading = ref(false);
 
 const newOffer = ref({
@@ -83,10 +84,10 @@ const handleDelete = async (offerId: string) => {
 };
 
 // Simplified: inline update for price only for now to keep UI clean
-const handleUpdatePrice = async (offer: any) => {
+const handleUpdatePrice = async (offer: Offer) => {
   try {
     await apiClient.put(`admin/offers/${offer.id}`, {
-      seller_id: offer.seller_id,
+      seller_id: offer.seller.id,
       price: offer.price,
       delivery_date: offer.delivery_date
     });
@@ -138,7 +139,7 @@ const handleUpdatePrice = async (offer: any) => {
             </thead>
             <tbody>
               <tr v-for="offer in offers" :key="offer.id">
-                <td>{{ sellers.find(s => s.id === offer.seller_id)?.name || 'Unknown' }}</td>
+                <td>{{ offer.seller?.name || sellers.find(s => s.id === offer.seller?.id)?.name || 'Unknown' }}</td>
                 <td>
                   <input v-model.number="offer.price.amount" type="number" class="inline-input" />
                 </td>

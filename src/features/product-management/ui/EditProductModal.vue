@@ -22,8 +22,10 @@ const handleTriggerUpload = () => {
   const input = document.createElement('input');
   input.type = 'file';
   input.accept = 'image/*';
-  input.onchange = async (e: any) => {
-    const file = e.target.files[0];
+  input.onchange = async (e: Event) => {
+    const target = e.target as HTMLInputElement;
+    if (!target.files?.length) return;
+    const file = target.files[0];
     const formData = new FormData();
     formData.append('file', file);
     try {

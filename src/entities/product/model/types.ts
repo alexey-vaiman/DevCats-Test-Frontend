@@ -20,6 +20,8 @@ export interface Offer {
   price: Price;
   delivery_date: string;
   seller: Seller;
+  product_id?: string;
+  product?: ProductListItem;
 }
 
 export interface ProductListItem {

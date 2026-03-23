@@ -3,15 +3,17 @@ import { ref, watch } from 'vue';
 import { X, ExternalLink } from 'lucide-vue-next';
 import { apiClient } from '@/shared/api';
 
+import type { Seller, Offer } from '@/entities/product/model/types';
+
 interface Props {
-  seller: any;
+  seller: Seller | null;
   show: boolean;
 }
 
 const props = defineProps<Props>();
 const emit = defineEmits(['close']);
 
-const offers = ref<any[]>([]);
+const offers = ref<Offer[]>([]);
 const loading = ref(false);
 
 const fetchOffers = async () => {

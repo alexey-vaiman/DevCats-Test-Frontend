@@ -8,7 +8,7 @@ const items = ref<ProductListItem[]>([]);
 const loading = ref(false);
 const hasMore = ref(true);
 const nextCursor = ref<string | null>(null);
-const scrollerRef = ref<any>(null);
+const scrollerRef = ref<InstanceType<typeof VirtualScroller> | null>(null);
 const selectedIdx = ref(0);
 const searchQuery = ref('');
 
