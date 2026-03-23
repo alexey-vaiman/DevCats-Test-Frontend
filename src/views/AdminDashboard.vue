@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
 import apiClient from '../api';
-import { Plus, Trash2, Edit3, Image as ImageIcon, Tag, Package, Search, RotateCcw } from 'lucide-vue-next';
+import { Plus, Trash2, Edit3, Image as ImageIcon, Tag, Package, Search, RotateCcw, LogOut } from 'lucide-vue-next';
+import { useAuthStore } from '../stores/auth';
+import { useRouter } from 'vue-router';
 import EditProductModal from '../components/EditProductModal.vue';
 import EditOffersModal from '../components/EditOffersModal.vue';
 import SellerEditModal from '../components/SellerEditModal.vue';
@@ -13,6 +15,14 @@ const showSellerOffersModal = ref(false);
 const handleShowOffers = (seller: any) => {
   selectedSeller.value = seller;
   showSellerOffersModal.value = true;
+};
+
+const authStore = useAuthStore();
+const router = useRouter();
+
+const handleLogout = () => {
+  authStore.logout();
+  router.push({ name: 'login' });
 };
 
 const activeTab = ref('products'); // 'products' or 'sellers'
@@ -138,8 +148,14 @@ onMounted(() => {
 <template>
   <div class="admin-dashboard">
     <div class="header">
-      <div class="title-group">
+      <div class="top-row">
         <h1>Admin Dashboard</h1>
+        <button @click="handleLogout" class="add-btn logout-btn">
+          <LogOut class="sm-icon" /> Logout
+        </button>
+      </div>
+      
+      <div class="bottom-row">
         <div class="tabs">
           <button 
             :class="{ active: activeTab === 'products' }" 
@@ -150,15 +166,14 @@ onMounted(() => {
             @click="activeTab = 'sellers'"
           >Sellers</button>
         </div>
-      </div>
-      
-      <div class="header-actions">
-        <button v-if="activeTab === 'products'" @click="showCreateModal = true" class="add-btn">
-          <Plus /> Create Product
-        </button>
-        <button v-if="activeTab === 'sellers'" @click="handleCreateSellerTrigger" class="add-btn">
-          <Plus /> Create Seller
-        </button>
+        <div class="header-actions">
+          <button v-if="activeTab === 'products'" @click="showCreateModal = true" class="add-btn">
+            <Plus /> Create Product
+          </button>
+          <button v-if="activeTab === 'sellers'" @click="handleCreateSellerTrigger" class="add-btn">
+            <Plus /> Create Seller
+          </button>
+        </div>
       </div>
     </div>
 
@@ -281,7 +296,7 @@ onMounted(() => {
     <!-- Manage Offers Modal -->
     <EditOffersModal
       :show="showOffersModal"
-      :productId="selectedProduct?.id"
+      :productId="selectedProduct?.id || ''"
       @close="showOffersModal = false"
     />
 
@@ -309,12 +324,19 @@ onMounted(() => {
 }
 .header {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
+  flex-direction: column;
+  gap: 1.5rem;
   margin-bottom: 2rem;
   flex-shrink: 0;
 }
-.title-group { display: flex; flex-direction: column; gap: 1rem; }
+.top-row, .bottom-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.top-row h1 {
+  margin: 0;
+}
 .tabs { display: flex; gap: 1rem; }
 .tabs button {
   background: rgba(255,255,255,0.05);
@@ -341,6 +363,14 @@ onMounted(() => {
   align-items: center;
   gap: 0.5rem;
   font-weight: 600;
+  padding: 0.5rem 1.5rem;
+  border-radius: 8px;
+}
+.logout-btn {
+  background: rgba(255, 99, 132, 0.1);
+  color: #ff6384;
+  border: 1px solid rgba(255, 99, 132, 0.3);
+  margin-left: 0;
 }
 .admin-table-container {
   background: rgba(255, 255, 255, 0.05);
