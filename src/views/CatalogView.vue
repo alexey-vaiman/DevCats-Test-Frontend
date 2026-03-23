@@ -123,6 +123,10 @@ onUnmounted(() => {
               <div class="details">
                 <h3>{{ item.name }}</h3>
                 <p class="price">{{ item.price.amount }} {{ item.price.currency }}</p>
+                <div class="stock-badges">
+                  <span v-if="item.stock > 0" class="badge-stock">In Stock ({{ item.stock }})</span>
+                  <span v-else class="badge-out">Out of Stock</span>
+                </div>
                 <router-link :to="{ name: 'product-detail', params: { id: item.id } }" class="btn">
                   View Details
                 </router-link>
@@ -224,7 +228,26 @@ onUnmounted(() => {
   font-weight: bold;
   font-size: 1.5rem;
   color: #4facfe;
-  margin: 0.5rem 0 1.5rem;
+  margin: 0.5rem 0 1rem;
+}
+.stock-badges {
+  margin-bottom: 1.5rem;
+}
+.badge-stock {
+  background: rgba(79, 172, 254, 0.1);
+  color: #4facfe;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.badge-out {
+  background: rgba(255, 99, 132, 0.1);
+  color: #ff6384;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
 }
 .btn {
   display: inline-block;

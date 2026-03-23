@@ -111,6 +111,14 @@ onMounted(fetchProduct);
   font-size: 0.9rem;
   font-weight: 600;
 }
+.badge-out {
+  background: rgba(255, 99, 132, 0.1);
+  color: #ff6384;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
 .attr-chip {
   display: inline-block;
   background: rgba(255,255,255,0.05);
