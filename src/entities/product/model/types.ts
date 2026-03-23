@@ -39,5 +39,4 @@ export interface ProductDetails {
   price: Price;
   stock: number;
   attributes: ProductAttribute[];
-  offers: Offer[];
 }

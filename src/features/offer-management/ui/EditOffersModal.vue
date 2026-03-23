@@ -1,15 +1,16 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import { X, Plus, Trash2, Save } from 'lucide-vue-next';
+import { X, Plus, Trash2, Save, Edit3 } from 'lucide-vue-next';
 import { apiClient } from '@/shared/api';
 
 interface Props {
   productId: string;
+  productName?: string;
   show: boolean;
 }
 
 const props = defineProps<Props>();
-const emit = defineEmits(['close']);
+const emit = defineEmits(['close', 'edit-product']);
 
 const offers = ref<any[]>([]);
 const sellers = ref<any[]>([]);
@@ -100,8 +101,13 @@ const handleUpdatePrice = async (offer: any) => {
   <div v-if="show" class="modal-overlay" @click.self="emit('close')">
     <div class="modal">
       <div class="modal-header">
-        <h2>Manage Offers</h2>
-        <button @click="emit('close')" class="close-btn"><X /></button>
+        <h2>Manage Offers <span v-if="productName" class="title-highlight">for "{{ productName }}"</span></h2>
+        <div class="header-right-actions">
+          <button v-if="productName" @click="emit('edit-product')" class="edit-link-btn" title="Edit Product">
+            <Edit3 class="sm-icon" /> Edit Product
+          </button>
+          <button @click="emit('close')" class="close-btn"><X /></button>
+        </div>
       </div>
 
       <div class="modal-body">
@@ -179,7 +185,16 @@ const handleUpdatePrice = async (offer: any) => {
   align-items: center;
   margin-bottom: 2rem;
 }
-.close-btn { background: none; border: none; color: #888; }
+.title-highlight { color: #4facfe; font-weight: normal; font-size: 1.2rem; margin-left: 0.5rem; }
+.header-right-actions { display: flex; align-items: center; gap: 1rem; }
+.edit-link-btn { 
+  display: flex; align-items: center; gap: 0.4rem; 
+  background: rgba(255,255,255,0.05); color: #fff; 
+  border: 1px solid rgba(255,255,255,0.1); 
+  padding: 0.4rem 0.8rem; border-radius: 6px; 
+  font-size: 0.85rem; cursor: pointer; 
+}
+.close-btn { background: none; border: none; color: #888; cursor: pointer; }
 .add-section {
   background: rgba(255,255,255,0.05);
   padding: 1.5rem;

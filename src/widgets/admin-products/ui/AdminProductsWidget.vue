@@ -164,7 +164,9 @@ onMounted(() => fetchProducts(true));
   <EditOffersModal
     :show="showOffersModal"
     :productId="selectedProduct?.id || ''"
+    :productName="selectedProduct?.name || ''"
     @close="showOffersModal = false"
+    @edit-product="() => { showOffersModal = false; showEditModal = true; }"
   />
 </template>
 

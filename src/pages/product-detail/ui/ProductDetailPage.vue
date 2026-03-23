@@ -3,19 +3,20 @@ import { ref, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { apiClient } from '@/shared/api';
 import { Truck, ShieldCheck } from 'lucide-vue-next';
-import type { ProductDetails } from '@/entities/product/model/types';
+import type { ProductDetails, Offer } from '@/entities/product/model/types';
 
 const route = useRoute();
 const product = ref<ProductDetails | null>(null);
 const loading = ref(true);
 const offersSort = ref<'price'|'delivery_date'>('price');
 
+const offers = ref<Offer[]>([]);
+const offersLoading = ref(true);
+
 const fetchProduct = async () => {
   loading.value = true;
   try {
-    const response = await apiClient.get(`public/products/${route.params.id}`, {
-      params: { offers_sort: offersSort.value }
-    });
+    const response = await apiClient.get(`public/products/${route.params.id}`);
     product.value = response.data;
   } catch (err) {
     console.error('Failed to fetch product:', err);
@@ -24,11 +25,28 @@ const fetchProduct = async () => {
   }
 };
 
+const fetchOffers = async () => {
+  offersLoading.value = true;
+  try {
+    const response = await apiClient.get(`public/products/${route.params.id}/offers`, {
+      params: { offers_sort: offersSort.value }
+    });
+    offers.value = response.data;
+  } catch (err) {
+    console.error('Failed to fetch offers:', err);
+  } finally {
+    offersLoading.value = false;
+  }
+};
+
 watch(() => product.value?.name, (newVal) => {
   if (newVal) document.title = `${newVal} | Marketplace`;
 }, { immediate: true });
 
-onMounted(fetchProduct);
+onMounted(() => {
+  fetchProduct();
+  fetchOffers();
+});
 </script>
 
 <template>
@@ -55,14 +73,17 @@ onMounted(fetchProduct);
           <div class="offers-section">
             <div class="offers-header">
               <h2>Available Offers</h2>
-              <select v-model="offersSort" @change="fetchProduct" class="sort-select">
+              <select v-model="offersSort" @change="fetchOffers" class="sort-select">
                 <option value="price">Sort by Price</option>
                 <option value="delivery_date">Sort by Delivery</option>
               </select>
             </div>
             
-            <div class="offers-list">
-              <div v-for="offer in product.offers" :key="offer.id" class="offer-card">
+            <div v-if="offersLoading" class="loading-offers" style="padding: 2rem; text-align: center; color: #888;">
+              <div class="spinner"></div> Loading offers...
+            </div>
+            <div v-else class="offers-list">
+              <div v-for="offer in offers" :key="offer.id" class="offer-card">
                 <div class="seller-info">
                   <div class="seller-name"><ShieldCheck class="icon" /> {{ offer.seller.name }}</div>
                   <div class="seller-rating">Rating: {{ offer.seller.rating }}/5</div>
